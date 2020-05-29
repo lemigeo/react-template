@@ -3,8 +3,8 @@ import Dashboard from './dashboard';
 
 const routes = [{
     path: '/',
-    component: asyncComponent(() => import('../views/Root')),
-    redirect: '/dashboard', 
+    redirect: "/dashboard",
+    component: asyncComponent(() => import('../views/Root')), 
     routes: [
         Dashboard
     ],
