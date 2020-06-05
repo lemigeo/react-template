@@ -1,20 +1,24 @@
 
 import React from 'react';
 import clsx from 'clsx';
+import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import Chart from '../components/Chart';
 import Deposit from '../components/Deposit';
 import Copyright from '../components/Copyright';
+import actions from '../../actions';
 
 const styles = makeStyles((theme) => ({
     content: {
         flexGrow: 1,
         height: '100vh',
-        overflow: 'auto',
+        width: '100%',
+        overflow: 'hidden',
     },
     container: {
         paddingTop: theme.spacing(4),
@@ -32,7 +36,20 @@ const styles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
 }));
 
-export default function Main() {
+
+const mapStateToProps = (state) => {
+    return {
+        chart: state.chart
+    }
+}
+
+const mapDispatchToProps =  (dispatch) => {
+    return {
+        setChart: id => dispatch(actions.chart.get(id)),
+    }
+};
+
+const Main = ({ chart, setChart }) => {
     const classes = styles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     return (
@@ -42,12 +59,14 @@ export default function Main() {
                 <Grid container spacing={3}>
                     {/* Chart */}
                     <Grid item xs={12} md={8} lg={9}>
+                    <Button color="primary" onClick={() => setChart('daily')}>Daily</Button>
+                    <Button color="primary" onClick={() => setChart('monthly')}>Monthly</Button>
                         <Paper className={fixedHeightPaper}>
-                        <Chart />
+                        <Chart data={chart.selected.data} />
                         </Paper>
                     </Grid>
                     {/* Recent Deposits */}
-                    <Grid item xs={12} md={4} lg={3}>
+                    <Grid item xs={12} md={8} lg={3}>
                         <Paper className={fixedHeightPaper}>
                         <Deposit />
                         </Paper>
@@ -60,3 +79,4 @@ export default function Main() {
         </main>
     );
 }
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

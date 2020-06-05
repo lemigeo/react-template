@@ -15,7 +15,7 @@ function RouterView(props){
                     redirect = <Redirect to={route.redirect} />
                 }
                 return (
-                    <div style={{width: '100%'}}>
+                    <div>
                         <route.component {...props} routes={route.routes || []} />
                         {redirect}
                     </div>
